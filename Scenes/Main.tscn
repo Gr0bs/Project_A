@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Scenes/Character/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://sprites/Player/Barrel.png" type="Texture" id=2]
 [ext_resource path="res://sprites/tileref/obstacle.png" type="Texture" id=3]
 [ext_resource path="res://sprites/tileref/Tile-Sets (64-64).png" type="Texture" id=4]
-[ext_resource path="res://Scenes/EnemyFactory.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/Enemy/EnemyFactory.gd" type="Script" id=5]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )

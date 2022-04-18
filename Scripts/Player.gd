@@ -48,10 +48,10 @@ func _display_ui() -> void:
 
 
 func _move(dir: String) -> void:
-	$Raycast.set_cast_to(inputs[dir] * tile_size)
-	$Raycast.force_raycast_update()
+	$RayCast2D.set_cast_to(inputs[dir] * tile_size)
+	$RayCast2D.force_raycast_update()
 			
-	if !$Raycast.is_colliding():
+	if !$RayCast2D.is_colliding():
 		$Tween.interpolate_property(
 			self,
 			"position",
