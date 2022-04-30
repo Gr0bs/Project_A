@@ -1,18 +1,33 @@
 extends Node2D
 
-onready var tilemap = owner.get_node("./TileMap")
+onready var obstacle = owner.get_node("./Obstacle")
 var enemy_scene = preload("res://Scenes/Enemy/Enemy.tscn")
+export var nbr_enemy_spawn := 2
+var start_pos = [Vector2(5,3), Vector2(7,6)]
 
+
+########### BUILD-IN #############
 func _ready() -> void:
 	randomize()
-	EVENTS.connect("get_chest", self, "_on_get_chest")
+	EVENTS.connect("get_chest_first", self, "_on_get_chest_first")
 
-func _on_get_chest() -> void:
-	for num in range(2):
+
+########## LOGIC ###########
+func _spawn_enemy() -> void:
+	for i in nbr_enemy_spawn:
 		var enemy = enemy_scene.instance()
-		var random_pos = Vector2(randi() % 11 + 3, randi() % 4 + 2)
-		var used_cell = tilemap.get_used_cells()
-		var world_pos = tilemap.map_to_world(random_pos)
-		tilemap.set_cellv(random_pos, 20)
-		enemy.position = Vector2(world_pos.x + 32, world_pos.y + 32)
+		var world_pos = obstacle.map_to_world(start_pos[i])
+		obstacle.set_cellv(start_pos[i], 20)
+		enemy.position = Vector2(world_pos.x, world_pos.y)
+		enemy.position += Vector2.ONE * 32
 		owner.add_child(enemy)
+		enemy.obstacle = obstacle
+		enemy.set_actor_map_pos(enemy.position)
+		enemy.get_next_move(start_pos[i])
+
+
+
+##########  SIGNAL #########
+func _on_get_chest_first() -> void:
+	_spawn_enemy()
+

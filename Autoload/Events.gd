@@ -1,5 +1,6 @@
 extends Node
 
-#warnings_disable
+# warnings-disable
 
-signal get_chest()
+signal get_chest_first()
+signal movement()
