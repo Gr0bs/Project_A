@@ -34,3 +34,5 @@ shape = SubResource( 3 )
 scale = Vector2( 0.643431, 0.643431 )
 texture = ExtResource( 4 )
 offset = Vector2( 0, 35 )
+
+[node name="Line2D" type="Line2D" parent="." index="5"]

@@ -1,6 +1,8 @@
 extends Area2D
 
 var obstacle
+var player
+var navigation
 var tile_size := 64
 var speed := 0.3
 var map_pos = Vector2(0,0) setget set_actor_map_pos, get_actor_map_pos
@@ -28,7 +30,7 @@ func get_actor_map_pos() -> Vector2:
 
 func _ready() -> void:
 	EVENTS.connect("movement", self, "_on_player_movement")
-		
+	
 
 ############# LOGIC ##################
 
@@ -53,15 +55,21 @@ func _move(dir: String) -> void:
 
 
 func get_next_move(pos: Vector2) -> void:
+	var path = navigation.get_simple_path(position, 
+		player.position, false)		
+	$Line2D.points = path
+	print(position)
+	print($Line2D.points)
+	print($Line2D.points[0])
 	var is_empty = 0
 	var dir 
 	
-	while is_empty != -1:
-		dir = direction.keys()[randi() % direction.size()]
-		var case_coord = get_actor_map_pos() + direction[dir]
-		print(obstacle.get_cellv(case_coord))
-		is_empty = obstacle.get_cellv(case_coord)
+	for dir_name in direction:
+		print("POS",position + direction[dir_name] * tile_size)
+		if position + direction[dir_name] * tile_size == $Line2D.points[0]:
+			dir == dir_name
 	
+	print(dir)
 	var rotation_arrow
 	match(dir):
 		"up": 

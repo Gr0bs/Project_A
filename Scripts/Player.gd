@@ -5,7 +5,7 @@ var speed := 0.3
 var select_case := false
 var authorised_drop = []
 var first_carrying_chest = false
-onready var obstacle = owner.get_node("./Obstacle")
+onready var obstacle = owner.get_node("./Navigation2D/Obstacle")
 
 const CHEST_SCN = preload("res://Scenes/Objects/Chest.tscn")
 

@@ -1,9 +1,13 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Objects/Chest.tscn" type="PackedScene" id=2]
 [ext_resource path="res://sprites/sprite.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/Enemy/EnemyFactory.gd" type="Script" id=5]
+
+[sub_resource type="NavigationPolygon" id=4]
+vertices = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
 
 [sub_resource type="ConvexPolygonShape2D" id=3]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
@@ -17,6 +21,7 @@ points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 0/tile_mode = 0
 0/occluder_offset = Vector2( 0, 0 )
 0/navigation_offset = Vector2( 0, 0 )
+0/navigation = SubResource( 4 )
 0/shape_offset = Vector2( 0, 0 )
 0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 0/shape_one_way = false
@@ -65,12 +70,14 @@ points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 position = Vector2( 256, 192 )
 z_index = 1
 
-[node name="Background" type="TileMap" parent="."]
+[node name="Navigation2D" type="Navigation2D" parent="."]
+
+[node name="Background" type="TileMap" parent="Navigation2D"]
 tile_set = SubResource( 2 )
 format = 1
 tile_data = PoolIntArray( 196612, 0, 0, 196613, 0, 0, 196614, 0, 0, 196615, 0, 0, 196616, 0, 0, 262148, 0, 0, 262149, 0, 0, 262150, 0, 0, 262151, 0, 0, 262152, 0, 0, 327684, 0, 0, 327685, 0, 0, 327686, 0, 0, 327687, 0, 0, 327688, 0, 0, 393220, -1610612736, 0, 393221, -1610612736, 0, 393222, -1610612736, 0, 393223, 0, 0, 393224, -1610612736, 0 )
 
-[node name="Obstacle" type="TileMap" parent="."]
+[node name="Obstacle" type="TileMap" parent="Navigation2D"]
 tile_set = SubResource( 2 )
 cell_tile_origin = 1
 format = 1
@@ -80,4 +87,5 @@ tile_data = PoolIntArray( 131075, 2, 0, 131076, 1, 0, 131077, 1, 0, 131078, 1, 0
 position = Vector2( 544, 416 )
 
 [node name="EnemyFactory" type="Node2D" parent="."]
+position = Vector2( 384, 320 )
 script = ExtResource( 5 )
