@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node",
+"class": "Pathfinder",
+"language": "GDScript",
+"path": "res://Scenes/Pathfinder.gd"
+} ]
+_global_script_class_icons={
+"Pathfinder": ""
+}
+
 [application]
 
 config/name="Project_A"

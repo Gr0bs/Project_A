@@ -2,7 +2,7 @@ extends Area2D
 
 var obstacle
 var player
-var navigation
+var pathfinder
 var tile_size := 64
 var speed := 0.3
 var map_pos = Vector2(0,0) setget set_actor_map_pos, get_actor_map_pos
@@ -30,7 +30,7 @@ func get_actor_map_pos() -> Vector2:
 
 func _ready() -> void:
 	EVENTS.connect("movement", self, "_on_player_movement")
-	
+	$Line2D.set_as_toplevel(true)	
 
 ############# LOGIC ##################
 
@@ -52,24 +52,19 @@ func _move(dir: String) -> void:
 		obstacle.set_cellv(get_actor_map_pos(), -1)
 		set_actor_map_pos(position + direction[dir] * tile_size)
 		obstacle.set_cellv(get_actor_map_pos(), 20)
+		$Line2D.clear_points()
 
 
-func get_next_move(pos: Vector2) -> void:
-	var path = navigation.get_simple_path(position, 
-		player.position, false)		
-	$Line2D.points = path
-	print(position)
-	print($Line2D.points)
-	print($Line2D.points[0])
-	var is_empty = 0
-	var dir 
+func get_next_move(from: Vector2, to: Vector2) -> void:
+	var path_point = pathfinder.find_path(from, to)
+	for point in path_point:
+		$Line2D.add_point(obstacle.map_to_world(point) + Vector2.ONE * 32)
 	
-	for dir_name in direction:
-		print("POS",position + direction[dir_name] * tile_size)
-		if position + direction[dir_name] * tile_size == $Line2D.points[0]:
-			dir == dir_name
+	var dir
+	for d in direction:
+		if get_actor_map_pos() + direction[d] == path_point[1]:
+			dir = d
 	
-	print(dir)
 	var rotation_arrow
 	match(dir):
 		"up": 
@@ -79,7 +74,7 @@ func get_next_move(pos: Vector2) -> void:
 		"left": 
 			rotation_arrow = 90
 		"right": rotation_arrow = -90
-	
+
 	$ArrowSprite.rotation_degrees = rotation_arrow
 	next_move = dir
 
@@ -89,6 +84,6 @@ func get_next_move(pos: Vector2) -> void:
 func _on_player_movement() -> void:
 	var dir_keys = direction.keys()
 	_move(next_move)
-	get_next_move(get_actor_map_pos())
+	get_next_move(get_actor_map_pos(), player.get_map_pos())
 
 

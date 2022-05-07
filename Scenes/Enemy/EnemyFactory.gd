@@ -1,9 +1,9 @@
 extends Node2D
 
-onready var obstacle = owner.get_node("./Navigation2D/Obstacle")
+onready var obstacle = owner.get_node("Obstacle")
 var enemy_scene = preload("res://Scenes/Enemy/Enemy.tscn")
 export var nbr_enemy_spawn := 2
-var start_pos = [Vector2(5,3), Vector2(7,6)]
+var start_pos = [Vector2(5,3), Vector2(5,5)]
 
 
 ########### BUILD-IN #############
@@ -21,11 +21,11 @@ func _spawn_enemy() -> void:
 		enemy.position = Vector2(world_pos.x, world_pos.y)
 		enemy.position += Vector2.ONE * 32
 		owner.add_child(enemy)
-		enemy.navigation = owner.get_node("Navigation2D")
 		enemy.obstacle = obstacle
+		enemy.pathfinder = owner.get_node("Background/Pathfinder")
 		enemy.player = owner.get_node("Player")
 		enemy.set_actor_map_pos(enemy.position)
-		enemy.get_next_move(start_pos[i])
+		enemy.get_next_move(start_pos[i], enemy.player.get_map_pos())
 
 
 
