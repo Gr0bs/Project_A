@@ -4,3 +4,4 @@ extends Node
 
 signal get_chest_first()
 signal movement()
+signal game_over()

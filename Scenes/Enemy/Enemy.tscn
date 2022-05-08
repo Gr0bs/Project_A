@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scenes/Actors/Actor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://sprites/sprite.png" type="Texture" id=2]
-[ext_resource path="res://Scenes/Enemy/Enemy.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/Enemy.gd" type="Script" id=3]
 [ext_resource path="res://sprites/Arrow.png" type="Texture" id=4]
 
 [sub_resource type="AtlasTexture" id=4]
@@ -30,9 +30,9 @@ animation = "Idle"
 [node name="CollisionShape2D" parent="." index="1"]
 shape = SubResource( 3 )
 
-[node name="ArrowSprite" type="Sprite" parent="." index="4"]
+[node name="ArrowSprite" type="Sprite" parent="." index="3"]
 scale = Vector2( 0.643431, 0.643431 )
 texture = ExtResource( 4 )
 offset = Vector2( 0, 35 )
 
-[node name="Line2D" type="Line2D" parent="." index="5"]
+[node name="Line2D" type="Line2D" parent="." index="4"]

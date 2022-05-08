@@ -1,12 +1,13 @@
 extends Area2D
 
 var obstacle
-var player
 var pathfinder
+var player
 var tile_size := 64
 var speed := 0.3
 var map_pos = Vector2(0,0) setget set_actor_map_pos, get_actor_map_pos
 var next_move : String
+var next_pos : Vector2
 
 
 var direction = {
@@ -29,30 +30,32 @@ func get_actor_map_pos() -> Vector2:
 ############ BUILT-IN ################
 
 func _ready() -> void:
-	EVENTS.connect("movement", self, "_on_player_movement")
 	$Line2D.set_as_toplevel(true)	
 
 ############# LOGIC ##################
 
-func _move(dir: String) -> void:
-	$RayCast2D.set_cast_to(direction[dir] * tile_size)
-	$RayCast2D.force_raycast_update()
+func move() -> void:
+	if !pathfinder.free_tile(next_pos):
+		return
 	
-	if !$RayCast2D.is_colliding():
-		$Tween.interpolate_property(
-			self,
-			"position",
-			position,
-			position + direction[dir] * tile_size,
-			speed, 
-			$Tween.TRANS_CUBIC,
-			$Tween.EASE_IN_OUT
-			)
-		$Tween.start()
-		obstacle.set_cellv(get_actor_map_pos(), -1)
-		set_actor_map_pos(position + direction[dir] * tile_size)
-		obstacle.set_cellv(get_actor_map_pos(), 20)
-		$Line2D.clear_points()
+	var last_pos = get_actor_map_pos()
+	$Tween.interpolate_property(
+		self,
+		"position",
+		position,
+		position + direction[next_move] * tile_size,
+		speed, 
+		$Tween.TRANS_CUBIC,
+		$Tween.EASE_IN_OUT
+		)
+	$Tween.start()
+	set_actor_map_pos(position + direction[next_move] * tile_size)
+	pathfinder.update_point(last_pos, get_actor_map_pos())
+	$Line2D.clear_points()
+	
+	if get_actor_map_pos() != player.get_map_pos():
+		get_next_move(get_actor_map_pos(), player.get_map_pos())
+		
 
 
 func get_next_move(from: Vector2, to: Vector2) -> void:
@@ -77,13 +80,10 @@ func get_next_move(from: Vector2, to: Vector2) -> void:
 
 	$ArrowSprite.rotation_degrees = rotation_arrow
 	next_move = dir
+	next_pos = path_point[1]
+	
 
 
-############ SIGNAL #################
 
-func _on_player_movement() -> void:
-	var dir_keys = direction.keys()
-	_move(next_move)
-	get_next_move(get_actor_map_pos(), player.get_map_pos())
 
 

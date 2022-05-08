@@ -1,0 +1,13 @@
+[gd_scene format=2]
+
+[node name="UI" type="CanvasLayer"]
+
+[node name="TITLE" type="Label" parent="."]
+visible = false
+margin_left = 378.827
+margin_top = 34.6483
+margin_right = 644.827
+margin_bottom = 83.6483
+text = "GAME OVER"
+align = 1
+valign = 1

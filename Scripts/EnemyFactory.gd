@@ -1,15 +1,17 @@
 extends Node2D
 
 onready var obstacle = owner.get_node("Obstacle")
+onready var player = owner.get_node("Player")
 var enemy_scene = preload("res://Scenes/Enemy/Enemy.tscn")
 export var nbr_enemy_spawn := 2
-var start_pos = [Vector2(5,3), Vector2(5,5)]
-
+export var start_pos = PoolVector2Array()
+var enemies_box = []
 
 ########### BUILD-IN #############
 func _ready() -> void:
 	randomize()
 	EVENTS.connect("get_chest_first", self, "_on_get_chest_first")
+	EVENTS.connect("movement", self, "_on_player_movement")
 
 
 ########## LOGIC ###########
@@ -22,14 +24,22 @@ func _spawn_enemy() -> void:
 		enemy.position += Vector2.ONE * 32
 		owner.add_child(enemy)
 		enemy.obstacle = obstacle
+		enemy.player = player
 		enemy.pathfinder = owner.get_node("Background/Pathfinder")
-		enemy.player = owner.get_node("Player")
 		enemy.set_actor_map_pos(enemy.position)
-		enemy.get_next_move(start_pos[i], enemy.player.get_map_pos())
-
+		enemy.get_next_move(start_pos[i], player.get_map_pos())
+		enemies_box.append(enemy)
 
 
 ##########  SIGNAL #########
 func _on_get_chest_first() -> void:
 	_spawn_enemy()
 
+
+############ SIGNAL #################
+func _on_player_movement() -> void:
+	for enemy in enemies_box:
+		enemy.move()
+
+		if player.get_map_pos() == enemy.get_actor_map_pos() :
+			EVENTS.emit_signal("game_over")

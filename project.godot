@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Pathfinder",
 "language": "GDScript",
-"path": "res://Scenes/Pathfinder.gd"
+"path": "res://Scripts/Pathfinder.gd"
 } ]
 _global_script_class_icons={
 "Pathfinder": ""

@@ -6,7 +6,7 @@ var astar = AStar2D.new()
 var room_size := Vector2.ZERO
 
 func _ready() -> void:
-	
+	EVENTS.connect("enemy_move", self, "_on_enemy_move")
 	room_size = tilemap.get_used_rect().size
 	_init_astar()
 
@@ -59,8 +59,15 @@ func find_path(from: Vector2, to: Vector2) -> PoolVector2Array:
 	var to_cell_id = _generate_point_id(to)
 	
 	var point_path = astar.get_point_path(from_cell_id, to_cell_id)
-	
 	return point_path
 	
-	
 
+func update_point(last_pos: Vector2, actual_pos: Vector2) -> void:
+	var last_pos_id = _generate_point_id(last_pos)
+	var actual_pos_id = _generate_point_id(actual_pos)
+	astar.set_point_disabled(last_pos_id, false)
+	astar.set_point_disabled(actual_pos_id, true)	
+	
+func free_tile(pos: Vector2) -> bool:
+	var pos_id = _generate_point_id(pos)
+	return !astar.is_point_disabled(pos_id)

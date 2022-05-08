@@ -8,5 +8,3 @@
 scale = Vector2( 3, 3 )
 
 [node name="Tween" type="Tween" parent="."]
-
-[node name="RayCast2D" type="RayCast2D" parent="."]
